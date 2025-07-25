@@ -12,17 +12,20 @@ git_status() {
         #show some details
         local repo_name=$(basename $(git rev-parse --show-toplevel))
         local repo_curr_branch=$(git branch --show-current)
-        echo "Found $repo_name on branch $repo_curr_branch" && return 0
+        echo "Found $repo_name on branch $repo_curr_branch"
 
-        local staged_changes=$(git diff --cahced --name-only | wc -l)
+        local staged=$(git diff --cached --name-only | wc -l)
         local modified=$(git diff --name-only | wc -l)
 
         echo "Files: ${staged} staged, ${modified} modified"
+        echo "" #new line for formatting
 
         if [ $staged -gt 0 ] || [ $modified -gt 0 ]; then
-            git status -s --untracked-files=no | head --8 
+            git status -s --untracked-files=no | head -8 
         else
             echo "Clean treee"
         fi
+
+        return 0
     fi
 }

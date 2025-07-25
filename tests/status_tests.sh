@@ -8,7 +8,7 @@ cd $test_dir
 test_get_status(){
     echo "Testing git status in $test_dir"
 
-    echo $(git_status "$test_dir")
+    git_status "$test_dir"
 }
 
 test_get_status
