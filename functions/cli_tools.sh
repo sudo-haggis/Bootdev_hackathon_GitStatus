@@ -14,7 +14,10 @@ find "$SEARCH_DIR" -type d -name ".git" 2>/dev/null | while read -r git_dir; do
     repo_dir=$(dirname "$git_dir")
     ##  appends the repository path to a temporary repositories.txt file
     echo "$repo_dir" >> "/tmp/repositories.txt"
+    
 done
+
+echo "Found $(wc -l /tmp/repositories.txt | awk '{print $1}') active repositories"
 
 repolist="/tmp/repositories.txt"
 
