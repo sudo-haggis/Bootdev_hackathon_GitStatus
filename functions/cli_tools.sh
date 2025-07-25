@@ -17,3 +17,23 @@ find "$SEARCH_DIR" -type d -name ".git" 2>/dev/null | while read -r git_dir; do
 done
 
 repolist="/tmp/repositories.txt"
+
+#  flags for the cli tool
+case "$1" in
+    -h|--help)
+        echo "Usage: gitit [flags]"
+        echo "Flags:"
+        echo "  -h, --help       Show this help message"
+        echo "  -r, --report    Generate a report of all repositories"
+        exit 0
+        ;;
+    -r|--report)
+        if [ -f "$repolist" ]; then
+            less "$repolist"
+        else
+            echo "No repositories found."
+        fi
+        exit 0
+        ;;
+esac
+
