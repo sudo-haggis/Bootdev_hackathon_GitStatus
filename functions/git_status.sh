@@ -10,12 +10,12 @@ git_status() {
         echo "Not a repo" && return 1
     else 
         #show some details
-        repo_name=$(basename $(git rev-parse --show-toplevel))
-        repo_curr_branch=$(git branch --show-current)
-        echo "Found Repo $repo_name on branch $repo_curr_branch" && return 0
+        local repo_name=$(basename $(git rev-parse --show-toplevel))
+        local repo_curr_branch=$(git branch --show-current)
+        echo "Found $repo_name on branch $repo_curr_branch" && return 0
 
-        staged_changes=$(git diff --cahced --name-only | wc -l)
-        modified=$(git diff --name-only | wc -l)
+        local staged_changes=$(git diff --cahced --name-only | wc -l)
+        local modified=$(git diff --name-only | wc -l)
 
         echo "Files: ${staged} staged, ${modified} modified"
 
