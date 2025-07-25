@@ -13,5 +13,16 @@ git_status() {
         repo_name=$(basename $(git rev-parse --show-toplevel))
         repo_curr_branch=$(git branch --show-current)
         echo "Found Repo $repo_name on branch $repo_curr_branch" && return 0
+
+        staged_changes=$(git diff --cahced --name-only | wc -l)
+        modified=$(git diff --name-only | wc -l)
+
+        echo "Files: ${staged} staged, ${modified} modified"
+
+        if [ $staged -gt 0 ] || [ $modified -gt 0 ]; then
+            git status -s --untracked-files=no | head --8 
+        else
+            echo "Clean treee"
+        fi
     fi
 }
