@@ -95,9 +95,28 @@ git add app.js
 git commit -q -m "! THIS APP IS MENTAL"
 
 git status --short
+echo "all staged repo setup"
 
 # STEP 2 : lets make a repo with some uncommited files
-#
+repo_path="$fake_dir_abs_path/project_beta/repo_staged"
+echo "Moving to $repo_path"
+cd $repo_path
+
+init_repo
+
+touch README.md
+echo "#staged repo" > README.m
+touch main.py
+echo "print('hello_world')" > main.py
+
+#add a single commit
+git add .
+git commit -q  -m "! first commit of the worst python app"
+
+echo "# ITS A TRAP... but who reads these anyway" > README.md
+git add README
+echo "repo with staging problem setup"
+
 # STEP 3 : lets also have ourself a repo thats half way through a rebase!
 #
 # STEP 4 and beyond can come later!
