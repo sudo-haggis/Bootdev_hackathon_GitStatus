@@ -48,8 +48,21 @@ mkdir -p project_gamma/repo_rebase
 
 echo "directories created" 
 
-
 # lets add some bad actors to hopefully avoid : bad files simple have _BAD_ in the file name
+touch BAD_marker_file.txt
+
+touch project_alpha/BAD_marker_file.txt
+touch project_alpha/src/utils/BAD_marker_file.txt
+
+touch project_beta/BAD_marker_file.txt
+touch project_beta/docs/BAD_marker_file.txt
+
+touch project_gamma/BAD_marker_file.txt
+touch project_gamma/config/BAD_marker_file.txt
+touch project_gamma/config/misc/BAD_marker_file.txt
+
+echo "Bad actors added to file system" 
+tree
 #
 # STEP 1 : lets make a clean perfect repo to test
 #
