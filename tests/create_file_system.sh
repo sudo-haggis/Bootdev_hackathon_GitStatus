@@ -4,7 +4,7 @@ function init_repo(){
     git config user.name "Test User"
     git config user.email "test@noncense.io"
 
-    git status -short
+    git status --short
 }
 #create a testing enviroment setup script
 # running this script will create a few directories with a specific style of folder structure
@@ -69,13 +69,32 @@ touch project_gamma/config/misc/BAD_marker_file.txt
 
 echo "Bad actors added to file system" 
 tree
-#
+
+##### Somthing to note, all git commit messages will start with ! sorry its my git setup to maintina concistatn messages, just ignore it! 
+##### i could add a function to remove my global git flows, but also meh. lets get the ball rolling
+
+
 # STEP 1 : lets make a clean perfect repo to tests
 repo_path="$fake_dir_abs_path/project_alpha/repo_clean"
 echo "Moving to $repo_path"
 cd $repo_path
 
 init_repo 
+
+#create a mentally complicated .js project...
+touch README.md
+echo "# Clean repo" > README.md
+touch app.js
+echo "console.log('hello_world');" > app.js
+
+#add initial commit
+git add .
+git commit -q -m "! Initial Commit" 
+
+echo "console.log('App v2.0');" >> app.js
+git add app.js
+git commit -q -m "! THIS APP IS MENTAL"
+
 
 # STEP 2 : lets make a repo with some uncommited files
 #
