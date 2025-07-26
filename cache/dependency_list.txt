@@ -1,0 +1,3 @@
+#  Placeholder list for any future dependencies. This list will be called on 
+#  by the installer.sh script to search the user's detected package manager
+#  for each dependency. 
