@@ -3,8 +3,8 @@
 #create a testing enviroment setup script
 # running this script will create a few directories with a specific style of folder structure
 # and file names in order to run tests on the accuracy of our product!
-fake_dir_abs_path="$(pwd)/fake_file_system"
-
+fake_file_system_name="fake_file_system"
+fake_dir_abs_path="$(pwd)/tests/$fake_file_system_name"
 set -e # exit if any errorrs occour
 
 echo "Lets make some directories..."
@@ -22,6 +22,16 @@ fi
 echo "Working... "
 
 # Delete any current fake repos to ensure clenliness
+if [ -d "$fake_dir_abs_path" ]; then
+    echo "removing current fake file system"
+    rm -rf $fake_dir_abs_path
+fi
+
+mkdir -p $fake_dir_abs_path
+cd $fake_dir_abs_path
+
+echo "Now in $(pwd) ready to start creating some repo's"
+
 #
 # create a directory structure 4 directories so far..#
 # lets add some bad actors to hopefully avoid : bad files simple have _BAD_ in the file name
