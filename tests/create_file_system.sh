@@ -22,7 +22,7 @@ read -r -p "Continue (Y/n)" choice
 
 if [ "$choice" != "Y" ] && [ "$choice" != "y" ]; then
     echo "Exiting..."
-    exit 1
+    break
 fi
 
 echo "Working... "
@@ -95,6 +95,7 @@ echo "console.log('App v2.0');" >> app.js
 git add app.js
 git commit -q -m "! THIS APP IS MENTAL"
 
+git status --short
 
 # STEP 2 : lets make a repo with some uncommited files
 #
