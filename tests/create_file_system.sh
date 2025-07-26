@@ -1,5 +1,11 @@
 #!/bin/bash
+function init_repo(){
+    git init -q
+    git config user.name "Test User"
+    git config user.email "test@noncense.io"
 
+    git status -short
+}
 #create a testing enviroment setup script
 # running this script will create a few directories with a specific style of folder structure
 # and file names in order to run tests on the accuracy of our product!
@@ -64,8 +70,13 @@ touch project_gamma/config/misc/BAD_marker_file.txt
 echo "Bad actors added to file system" 
 tree
 #
-# STEP 1 : lets make a clean perfect repo to test
-#
+# STEP 1 : lets make a clean perfect repo to tests
+repo_path="$fake_dir_abs_path/project_alpha/repo_clean"
+echo "Moving to $repo_path"
+cd $repo_path
+
+init_repo 
+
 # STEP 2 : lets make a repo with some uncommited files
 #
 # STEP 3 : lets also have ourself a repo thats half way through a rebase!
