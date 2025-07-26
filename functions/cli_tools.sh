@@ -148,7 +148,7 @@ case "$1" in
         fi
         ;;
     -t|--test-dir)
-        SEARCH_DIR="."
+        SEARCH_DIR="./tests/fake_file_system/"
         echo "Testing directory set to current directory: $SEARCH_DIR"
         quick_report
         exit 0
