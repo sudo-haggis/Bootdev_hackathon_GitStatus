@@ -10,15 +10,20 @@ __init__() {
     ##  sets the ignore list file path
     ignore_list="$HOME/.config/gitit/ignore.conf"
     ##  sets the path for the temporary repository list file
-    repolist="/tmp/repositories.txt"
+    repo_list="/tmp/repositories.txt"
+    ##  sets the path for the report file
+    report="/tmp/repositories_report.txt"
 
 ## removes the temporary repositories.txt file if it exists
-    if [ -f "/tmp/repositories.txt" ]; then
-    rm "/tmp/repositories.txt"
+    if [ -f "$repo_list" ]; then
+    rm "$repo_list"
+    fi
+
+## removes the report file if it exists
+    if [ -f "$report" ]; then
+    rm "$report"
     fi
 }
-__init__
-
 
 quick_report() {
 ##  Generates a quick report of all local repositories found in the search directory
@@ -37,26 +42,54 @@ quick_report() {
         continue
     else
     ##  appends the repository path to a temporary repositories.txt file
-        echo "$repo_dir" >> "/tmp/repositories.txt"
+        echo "$repo_dir" >> "$repo_list"
     fi
     done
+    ## sorts the repository list and removes duplicates
+    sort -u "$repo_list" -o "$repo_list"
+    ## creates report text file
+    nl -w 2 -s '. ' "$repo_list" > "$report"
 
-##  prints an quick report of the repositories found
+##  prints a quick report of the repositories found
     echo "==============================================================================="
     echo
-    echo "Found $(wc -l /tmp/repositories.txt | awk '{print $1}') active repositories"
+    echo "Found $(wc -l "$repo_list" | awk '{print $1}') active repositories"
     echo
     echo "==============================================================================="
     echo
     echo "List of repositories:"
     echo "-----------------------"
-    cat /tmp/repositories.txt | sort -u | nl -w 2 -s '. '     
+    cat "$report"     
     echo "================================================================================"
 }
+
+move_to_repo() {
+##  Moves to the selected repository directory
+### Must be called after quick_report has been run
+
+#  Prompts user for input to select a repository
+    read -p "Enter the number of the repo to navigate to: " repo_number
+    #  Validates input
+    if ! [[ "$repo_number" =~ ^[0-9]+$ ]]; then
+        echo "Invalid input. Please enter a number."
+        return 1
+    fi
+    #  Converts input to absolute path using report file
+    target_repo=$(sed -n "${repo_number}s/^ *[0-9]*[.] //p" "$report")
+
+    if [ -n "$target_repo" ]; then
+            echo "Changing directory to: $target_repo"
+            cd "$target_repo" || echo "Failed to change directory."
+        fi
+
+}
+
+__init__
 
 if [ -z "$1" ]; then
     echo "No flags provided. Running quick report..."
     quick_report
+    move_to_repo
     exit 0
 fi
 
@@ -83,10 +116,10 @@ case "$1" in
         exit 0
         ;;
     -r|--report)
-        if [ -f "$repolist" ]; then
+        if [ -f "$repo_list" ]; then
             echo "Generating report of all repositories..."
             sleep 1
-            less "$repolist"
+            less "$repo_list"
         else
             echo "No repositories found."
         fi
@@ -107,8 +140,8 @@ case "$1" in
         fi
 
         #  Append the ignore pattern to the ignore.conf file
-        if [ -f "$repolist" ]; then
-            grep -E "$ignore_pattern" "$repolist" >> "$ignore_list"
+        if [ -f "$repo_list" ]; then
+            grep -E "$ignore_pattern" "$repo_list" >> "$ignore_list"
             echo ignore pattern "$ignore_pattern" added to "$HOME"/.config/gitit/ignore.conf
         else
             echo "No repositories found."
