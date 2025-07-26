@@ -43,7 +43,7 @@ quick_report() {
     else
     ##  appends the repository path to a temporary repositories.txt file
     echo "$repo_dir" >> "/tmp/repositories.txt"
-    
+    fi 
 done
 
 echo "Found $(wc -l /tmp/repositories.txt | awk '{print $1}') active repositories"
