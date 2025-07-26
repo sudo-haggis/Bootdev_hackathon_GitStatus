@@ -105,7 +105,7 @@ cd $repo_path
 init_repo
 
 touch README.md
-echo "#staged repo" > README.m
+echo "#staged repo" > README.md
 touch main.py
 echo "print('hello_world')" > main.py
 
