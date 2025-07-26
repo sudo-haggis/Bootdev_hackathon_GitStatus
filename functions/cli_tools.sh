@@ -1,35 +1,64 @@
 #!/bin/bash
-ignore_list="$HOME/.config/gitit/ignore.conf"
+#  gitIt CLI Tool
+#  This script provides a command-line interface to manage and print reports of local Git repositories.
 
-#  search the computer for repositories, adding them to a .txt file
-#echo "Getting repositories..."
-#sleep 1
-##  checks if the temporary repositories.txt file exists, if so, removes it
-if [ -f "/tmp/repositories.txt" ]; then
+__init__() {
+    ##  Establishes variables for the script  ##
+
+    ##  sets the search directory to the home directory
+    SEARCH_DIR="$HOME"
+    ##  sets the ignore list file path
+    ignore_list="$HOME/.config/gitit/ignore.conf"
+    ##  sets the path for the temporary repository list file
+    repolist="/tmp/repositories.txt"
+
+## removes the temporary repositories.txt file if it exists
+    if [ -f "/tmp/repositories.txt" ]; then
     rm "/tmp/repositories.txt"
-fi
-##  sets the search directory to the home directory
-SEARCH_DIR="$HOME"
-##  searches for .git directories
-find "$SEARCH_DIR" -type d -name ".git" 2>/dev/null | while read -r git_dir; do
+    fi
+}
+__init__
+
+
+quick_report() {
+##  Generates a quick report of all local repositories found in the search directory
+    echo "==============================================================================="
+    echo
+    echo "*gitting* repositories..."
+    echo
+    echo "==============================================================================="
+    ##  searches for .git directories
+    find "$SEARCH_DIR" -type d -name ".git" 2>/dev/null | while read -r git_dir; do
     ##  gets the parent directory of the .git directory
     repo_dir=$(dirname "$git_dir")
     ## checks the ignore.conf file for the repository path, ignoring it if present
     if grep -q "$repo_dir" "$ignore_list" 2>/dev/null; then
-        #echo "Ignoring repository: $repo_dir"
+        echo "Ignoring repository: $repo_dir..."
         continue
     else
     ##  appends the repository path to a temporary repositories.txt file
         echo "$repo_dir" >> "/tmp/repositories.txt"
     fi
+    done
 
-    
-done
+##  prints an quick report of the repositories found
+    echo "==============================================================================="
+    echo
+    echo "Found $(wc -l /tmp/repositories.txt | awk '{print $1}') active repositories"
+    echo
+    echo "==============================================================================="
+    echo
+    echo "List of repositories:"
+    echo "-----------------------"
+    cat /tmp/repositories.txt | sort -u | nl -w 2 -s '. '     
+    echo "================================================================================"
+}
 
-#echo "Found $(wc -l /tmp/repositories.txt | awk '{print $1}') active repositories"
-#sleep 1
-
-repolist="/tmp/repositories.txt"
+if [ -z "$1" ]; then
+    echo "No flags provided. Running quick report..."
+    quick_report
+    exit 0
+fi
 
 #  flags for the cli tool
 case "$1" in
@@ -84,6 +113,12 @@ case "$1" in
         else
             echo "No repositories found."
         fi
+        ;;
+    -t|--test-dir)
+        SEARCH_DIR="."
+        echo "Testing directory set to current directory: $SEARCH_DIR"
+        quick_report
+        exit 0
         ;;
 esac
 
