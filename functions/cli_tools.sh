@@ -1,7 +1,9 @@
 #!/bin/bash
+ignore_list="$HOME/.config/gitit/ignore.conf"
 
 #  search the computer for repositories, adding them to a .txt file
-echo "Getting repositories..."
+#echo "Getting repositories..."
+#sleep 1
 ##  checks if the temporary repositories.txt file exists, if so, removes it
 if [ -f "/tmp/repositories.txt" ]; then
     rm "/tmp/repositories.txt"
@@ -12,26 +14,49 @@ SEARCH_DIR="$HOME"
 find "$SEARCH_DIR" -type d -name ".git" 2>/dev/null | while read -r git_dir; do
     ##  gets the parent directory of the .git directory
     repo_dir=$(dirname "$git_dir")
+    ## checks the ignore.conf file for the repository path, ignoring it if present
+    if grep -q "$repo_dir" "$ignore_list" 2>/dev/null; then
+        #echo "Ignoring repository: $repo_dir"
+        continue
+    else
     ##  appends the repository path to a temporary repositories.txt file
-    echo "$repo_dir" >> "/tmp/repositories.txt"
+        echo "$repo_dir" >> "/tmp/repositories.txt"
+    fi
+
     
 done
 
-echo "Found $(wc -l /tmp/repositories.txt | awk '{print $1}') active repositories"
+#echo "Found $(wc -l /tmp/repositories.txt | awk '{print $1}') active repositories"
+#sleep 1
 
 repolist="/tmp/repositories.txt"
 
 #  flags for the cli tool
 case "$1" in
     -h|--help)
+        echo                                "gitIt CLI Tool"
+        echo "==============================================================================="
+        echo "This tool provides a quick report of all local repositories found on your system,"
+        echo "as well as the ability to quickly navigate to them."
+        echo "==============================================================================="
         echo "Usage: gitit [flags]"
+        echo
+        echo "Without flags, gitit will display a TUI with a list of all repositories."
+        echo "You can navigate to a repository by selecting it with the arrow keys and pressing Enter."
+        echo "You can also use the following flags:"
+        echo
         echo "Flags:"
         echo "  -h, --help       Show this help message"
         echo "  -r, --report    Generate a report of all repositories"
+        echo "  --ignore-repo <REGEX pattern>  Ignore repositories matching the provided pattern"
+        echo "                                 This will add the pattern to the ignore.conf file" 
+        echo "                                 in $HOME/.config/gitit"
         exit 0
         ;;
     -r|--report)
         if [ -f "$repolist" ]; then
+            echo "Generating report of all repositories..."
+            sleep 1
             less "$repolist"
         else
             echo "No repositories found."
@@ -51,9 +76,10 @@ case "$1" in
             mkdir -p "$HOME/.config/gitit"
             touch "$HOME/.config/gitit/ignore.conf"
         fi
+
         #  Append the ignore pattern to the ignore.conf file
         if [ -f "$repolist" ]; then
-            grep -E "$ignore_pattern" "$repolist" >> "$HOME/.config/gitit/ignore.conf"
+            grep -E "$ignore_pattern" "$repolist" >> "$ignore_list"
             echo ignore pattern "$ignore_pattern" added to "$HOME"/.config/gitit/ignore.conf
         else
             echo "No repositories found."
