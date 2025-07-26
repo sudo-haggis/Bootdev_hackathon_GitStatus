@@ -32,8 +32,23 @@ cd $fake_dir_abs_path
 
 echo "Now in $(pwd) ready to start creating some repo's"
 
-#
-# create a directory structure 4 directories so far..#
+# create a directory structure 4 directories so far..
+
+#project alpha, clean and tidy
+mkdir -p project_alpha/src/utils
+mkdir -p project_alpha/repo_clean
+
+#project beta, not staged
+mkdir -p project_beta/docs
+mkdir -p project_beta/repo_staged
+
+#project gamma half way through a rebase 
+mkdir -p project_gamma/config/misc
+mkdir -p project_gamma/repo_rebase
+
+echo "directories created" 
+
+
 # lets add some bad actors to hopefully avoid : bad files simple have _BAD_ in the file name
 #
 # STEP 1 : lets make a clean perfect repo to test
