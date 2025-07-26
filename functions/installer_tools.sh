@@ -1,3 +1,4 @@
+##!/bin/bash
 #  gitIt CLI Tool installer script
 
 #  detects the package manager and installs any neccessary dependencies
