@@ -42,13 +42,56 @@ quick_report() {
         continue
     else
     ##  appends the repository path to a temporary repositories.txt file
-    echo "$repo_dir" >> "/tmp/repositories.txt"
-    fi 
-done
+        echo "$repo_dir" >> "$repo_list"
+    fi
+    done
+    ## sorts the repository list and removes duplicates
+    sort -u "$repo_list" -o "$repo_list"
+    ## creates report text file
+    nl -w 2 -s '. ' "$repo_list" > "$report"
 
-echo "Found $(wc -l /tmp/repositories.txt | awk '{print $1}') active repositories"
+##  prints a quick report of the repositories found
+    echo "==============================================================================="
+    echo
+    echo "Found $(wc -l "$repo_list" | awk '{print $1}') active repositories"
+    echo
+    echo "==============================================================================="
+    echo
+    echo "List of repositories:"
+    echo "-----------------------"
+    cat "$report"     
+    echo "================================================================================"
+}
 
-repolist="/tmp/repositories.txt"
+move_to_repo() {
+##  Moves to the selected repository directory
+### Must be called after quick_report has been run
+
+#  Prompts user for input to select a repository
+    read -p "Enter the number of the repo to navigate to: " repo_number
+    #  Validates input
+    if ! [[ "$repo_number" =~ ^[0-9]+$ ]]; then
+        echo "Invalid input. Please enter a number."
+        return 1
+    fi
+    #  Converts input to absolute path using report file
+    target_repo=$(sed -n "${repo_number}s/^ *[0-9]*[.] //p" "$report")
+
+    if [ -n "$target_repo" ]; then
+            echo "Changing directory to: $target_repo"
+            cd "$target_repo" || echo "Failed to change directory."
+        fi
+
+}
+
+__init__
+
+if [ -z "$1" ]; then
+    echo "No flags provided. Running quick report..."
+    quick_report
+    move_to_repo
+    exit 0
+fi
 
 #  flags for the cli tool
 case "$1" in
@@ -105,7 +148,7 @@ case "$1" in
         fi
         ;;
     -t|--test-dir)
-        SEARCH_DIR="./tests/fake_file_system/"
+        SEARCH_DIR="."
         echo "Testing directory set to current directory: $SEARCH_DIR"
         quick_report
         exit 0
