@@ -23,7 +23,7 @@ git_status() {
         if [ $staged -gt 0 ] || [ $modified -gt 0 ]; then
             git status -s --untracked-files=no | head -8 
         else
-            echo "Clean treee"
+            echo "Clean tree"
         fi
 
         return 0
