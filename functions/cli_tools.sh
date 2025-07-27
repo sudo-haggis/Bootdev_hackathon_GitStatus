@@ -1,7 +1,7 @@
 #!/bin/bash
 #  gitIt CLI Tool
 #  This script provides a command-line interface to manage and print reports of local Git repositories.
-source ./git_status.sh
+source ./functions/git_status.sh
 cat <<'EOF'
 
         _ __  __________
