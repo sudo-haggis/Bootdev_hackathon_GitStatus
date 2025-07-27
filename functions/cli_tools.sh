@@ -2,7 +2,15 @@
 #  gitIt CLI Tool
 #  This script provides a command-line interface to manage and print reports of local Git repositories.
 source ./git_status.sh
+cat <<'EOF'
 
+        _ __  __________
+  ___ _(_) /_/  _/_  __/
+ / _ `/ / __// /  / /   
+ \_, /_/\__/___/ /_/    
+/___/                   
+EOF
+sleep 1
 __init__() {
     ##  Establishes variables for the script  ##
 
@@ -27,10 +35,9 @@ __init__() {
     rm "$report"
     fi
     
-##  generates sorted list of repositories
-
+##  generates sorted list of repositories          
     echo "                              *gitting* repositories..."
-    echo "---------------------------------------------------------------------------------------"
+    echo "-----------------------------------------------------------------------------------------"
     ##  searches for .git directories
     find "$SEARCH_DIR" -type d -name ".git" 2>/dev/null | while read -r git_dir; do
     ##  gets the parent directory of the .git directory
@@ -44,7 +51,7 @@ __init__() {
         echo "$repo_dir" >> "$repo_list"
     fi
     done
-    echo "------------------------------------------------------------------------------------"
+    echo "-----------------------------------------------------------------------------------------"
     ## sorts the repository list and removes duplicates
     sort -u "$repo_list" -o "$repo_list"
     ## creates report text file
@@ -56,16 +63,16 @@ quick_report() {
 
 
 ##  prints a quick report of the repositories found
-    echo "==============================================================================="
+    echo "========================================================================================="
     echo
     echo "Found $(wc -l "$repo_list" | awk '{print $1}') active repositories"
     echo
-    echo "==============================================================================="
+    echo "========================================================================================="
     echo
     echo "List of repositories:"
-    echo "-----------------------"
+    echo "----------------------------------------------------------------------------------------"
     cat "$report"     
-    echo "================================================================================"
+    echo "========================================================================================="
 }
 
 move_to_repo() {
@@ -102,10 +109,10 @@ fi
 case "$1" in
     -h|--help)
         echo                                "gitIt CLI Tool"
-        echo "==============================================================================="
+        echo "====================================================================================="
         echo "This tool provides a quick report of all local repositories found on your system,"
         echo "as well as the ability to quickly navigate to them."
-        echo "==============================================================================="
+        echo "====================================================================================="
         echo "Usage: gitit [flags]"
         echo
         echo "Without flags, gitit will display a TUI with a list of all repositories."
@@ -124,7 +131,7 @@ case "$1" in
         {
             if [ -f "$repo_list" ]; then
                 echo "Generating report of all repositories..."
-                echo "==============================================================================="
+                echo "============================================================================="
                 echo
                 echo "Found $(wc -l "$repo_list" | awk '{print $1}') active repositories"
                 echo "-----------------------"
@@ -133,12 +140,12 @@ case "$1" in
                 cat "$report"                 
                 echo
                 echo "                              git status"
-                echo "==============================================================================="
+                echo "============================================================================="
                 for repo in $(cat "$repo_list"); do
                     git_status "$repo" > "$status"
                 done
                 cat "$status"
-                echo "==============================================================================="
+                echo "============================================================================="
             else
                 echo "No repositories found."
             fi
@@ -175,12 +182,12 @@ case "$1" in
     -s|--status)
         if [ -f "$repo_list" ]; then
             echo "             Generating git status for all repositories..."
-            echo "==============================================================================="
+            echo "========================================================================================="
             for repo in $(cat "$repo_list"); do
                 git_status "$repo" > "$status"
             done
             cat "$status"
-            echo "==============================================================================="
+            echo "========================================================================================="
         else
             echo "No repositories found."
         fi
