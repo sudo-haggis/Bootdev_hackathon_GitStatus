@@ -1,3 +1,6 @@
+README
+        
+        
         _ __  __________
   ___ _(_) /_/  _/_  __/
  / _ `/ / __// /  / /   
@@ -6,7 +9,7 @@
                                                                           Our entry for the boot.dev Hackathon 2025. 
 ==================================================================================================================================================================
 #  gitIt
-######  *ha, get it?*
+*ha, get it?*
 **gitIt** searches your `$HOME` directory for any git repositories and returns the status of each active repository. This is the default behavoir of gitIt, simply run `gitIt` and watch it go to work!
 
 **gitIt** can also return a count of all non-ignored repositories and display the paths of each repository in a numbered list. Run `gitIt -l|--list` for this behavior!
