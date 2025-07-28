@@ -5,11 +5,11 @@ git_status() {
     abs_path=$1
     cd $abs_path
 
-    #if we find a .git file, 
+    #If not a git repo echo "Not a repo"
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         echo "Not a repo" && return 1
     else 
-        #show some details
+        #show some details of the repo
         local repo_name=$(basename $(git rev-parse --show-toplevel))
         local repo_curr_branch=$(git branch --show-current)
         echo "Found $repo_name on branch $repo_curr_branch"
