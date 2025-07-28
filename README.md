@@ -2,6 +2,10 @@
 
 #  gitIt
 *ha, get it?*
+#### Installation
+```
+git clone https://github.com/sudo-haggis/Bootdev_hackathon_GitStatus ~/gitIt && cd ~/gitIt && chmod +x installer.sh && ./installer.sh
+```
 
 **gitIt** searches your `$HOME` directory for any git repositories and returns the status of each active repository. This is the default behavoir of gitIt, simply run `gitIt` and watch it go to work!
 
