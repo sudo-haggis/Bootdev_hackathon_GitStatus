@@ -1,15 +1,8 @@
-README
-        
-        
-        _ __  __________
-  ___ _(_) /_/  _/_  __/
- / _ `/ / __// /  / /   
- \_, /_/\__/___/ /_/    
-/___/                         A command-line tool for inspecting local repos
-                                                                          Our entry for the boot.dev Hackathon 2025. 
-==================================================================================================================================================================
+<img width="1638" height="230" alt="image" src="https://github.com/user-attachments/assets/5d2d023e-3dc6-435c-acc1-ebae6ff100dd" />
+
 #  gitIt
 *ha, get it?*
+
 **gitIt** searches your `$HOME` directory for any git repositories and returns the status of each active repository. This is the default behavoir of gitIt, simply run `gitIt` and watch it go to work!
 
 **gitIt** can also return a count of all non-ignored repositories and display the paths of each repository in a numbered list. Run `gitIt -l|--list` for this behavior!
