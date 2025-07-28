@@ -12,3 +12,12 @@
 
 #  Future of gitIt
 We intend to keep adding to this project, adding new useful features and improving existing features!
+
+## Screenshots
+`gitIt`
+
+<img width="995" height="486" alt="image" src="https://github.com/user-attachments/assets/cf8c63d8-1ba9-439c-a518-59a7bb685c80" />
+
+`gitIt -l`
+
+<img width="1007" height="603" alt="image" src="https://github.com/user-attachments/assets/fcd6cda3-646c-4527-bf39-0baaea0a4c9e" />
