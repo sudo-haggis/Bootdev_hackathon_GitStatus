@@ -2,7 +2,6 @@
 #  gitIt CLI Tool
 #  This script provides a command-line interface to manage and print reports of local Git repositories.
 source ./functions/git_status.sh
-source ./functions/directory_switcher.sh
 __init__() {
     ##  Establishes variables for the script  ##
 
