@@ -1,28 +1,23 @@
 #!/bin/bash
 source ./functions/cli_tools.sh
-cat <<'EOF'
+init_colours
 
+echo -e "${BLUE}" 
+cat <<'EOF'
         _ __  __________
   ___ _(_) /_/  _/_  __/
  / _ `/ / __// /  / /   
  \_, /_/\__/___/ /_/    
 /___/                   
 EOF
+echo -e "${NC}"
+
 gitIt() {
     case "$1" in
-        ""|--default) __init__
-            if [ -f "$repo_list" ]; then
-            echo "             Generating git status for all repositories..."
-            echo "========================================================================================="
-            for repo in $(cat "$repo_list"); do
-                git_status "$repo" > "$status"
-            done
-            cat "$status"
-            echo "========================================================================================="
-            else
-            echo "No repositories found."
-            fi
-            exit 0
+        ""|--default)
+            __init__
+            quick_report
+            generate_status
         ;;
         -h|--help)
         echo "                                   gitIt CLI Tool"
@@ -44,19 +39,8 @@ gitIt() {
         exit 0
         ;;
         -s) __init__
-            if [ -f "$repo_list" ]; then
-            echo "             Generating git status for all repositories..."
-            echo "========================================================================================="
-            for repo in $(cat "$repo_list"); do
-                git_status "$repo" > "$status"
-            done
-            cat "$status"
-            echo "========================================================================================="
-            else
-            echo "No repositories found."
-            fi
-            exit 0
-        ;;
+            generate_status
+            ;;
         --ignore-repo)
         #  Check if the ignore pattern is provided
         if [ -z "$2" ]; then
@@ -82,20 +66,19 @@ gitIt() {
         ;;
         -l|--list) __init__
             if [ -f "$repo_list" ]; then
-                echo "                  Generating a list of all local repositories..."
-                echo "========================================================================================="
-                echo
-                echo "Found $(wc -l "$repo_list" | awk '{print $1}') active repositories"
-                echo
-                echo "========================================================================================="
-                echo
-                echo "List of repositories:"
-                echo "----------------------------------------------------------------------------------------"
-                cat "$report"
-                echo "========================================================================================="
+                quick_report
             else
                 echo "No repositories found."
             fi
+            exit 0
+        ;;
+        -t|--test-dir)
+            TEST=true
+            SEARCH_DIR="tests/fake_file_system"
+            echo "Testing directory set to current directory: $SEARCH_DIR"
+            __init__
+            quick_report
+            generate_status
             exit 0
         ;;
     esac
