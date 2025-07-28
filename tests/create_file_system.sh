@@ -114,11 +114,54 @@ git add .
 git commit -q  -m "! first commit of the worst python app"
 
 echo "# ITS A TRAP... but who reads these anyway" > README.md
-git add README
+git add README.md
 echo "repo with staging problem setup"
 
 # STEP 3 : lets also have ourself a repo thats half way through a rebase!
 #
+repo_path="$fake_dir_abs_path/project_gamma/repo_rebase"
+echo "Moving to $repo_path"
+cd $repo_path
+
+init_repo
+
+echo "// Main feature" > feature.txt
+echo "#include <stdio.h>
+int main() { 
+    printf(\"Hello\"); 
+    return 0; 
+}" > main.c
+git add .
+git commit -q -m "! Initial C program"
+
+# Create feature branch and commit
+git checkout -q -b feature-branch
+echo "// Feature addition" >> feature.txt
+echo "#include <stdio.h>
+int main() { 
+    printf(\"Hello World\"); 
+    return 0; 
+}" > main.c
+git add .
+git commit -q -m "! Add feature"
+
+# Switch back to main and create conflicting commit
+git checkout -q main
+echo "// Main update" >> feature.txt  
+echo "#include <stdio.h>
+int main() { 
+    printf(\"Hello Main\"); 
+    return 0; 
+}" > main.c
+git add .
+git commit -q -m "! Main update"
+
+# Start rebase to create conflict state
+git rebase feature-branch || true  # Allow it to fail
+
+echo "✅ Rebase repo setup complete (in conflict state)"
+
+
 # STEP 4 and beyond can come later!
 #
 # COMPLETION
